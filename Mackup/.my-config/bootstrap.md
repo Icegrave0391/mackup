@@ -1,7 +1,11 @@
 ### 0. Install mackup
+
+```
 brew install mackup
 pip3 install --system mackup
 vi ~/.mackup.cfg
+```
+
 ```
 [storage]
 engine = file_system
