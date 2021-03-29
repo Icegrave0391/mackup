@@ -12,6 +12,8 @@ if [ "$(uname)" == "Darwin" ]; then
   # Remove Screenshot Shadow
   defaults write com.apple.screencapture disable-shadow -bool TRUE
   Killall SystemUIServer
+  # Install neovim
+  brew install neovim
   # Install autojump
   printf "${GREEN}autojump${NC}\n"
   brew install autojump
@@ -21,7 +23,9 @@ if [ "$(uname)" == "Darwin" ]; then
   brew install tmux
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
   # GNU/Linux
-  # autojump
+  # Install neovim
+  sudo apt-get install neovim
+  # Install autojump
   printf "${GREEN}autojump${NC}\n"
   sudo apt-get install autojump
   echo ". /usr/share/autojump/autojump.sh" >> ~/.zshrc
@@ -41,7 +45,7 @@ if [ -d "$HOME/.oh-my-zsh/custom/themes/powerlevel10k" ]; then
   printf "exists\n"
 else
   printf "installing\n"
-  git clone --depth=0 https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k
 fi
 # zsh-syntax-highlighting
 printf "${GREEN}zsh-syntax-highlighting${NC} "
@@ -61,7 +65,7 @@ else
 fi
 
 # shell-commands
-echo "source ~/.my-config/shell-commands" >> ~/.zshrc
+echo "source ~/.my-config/shell-commands.sh" >> ~/.zshrc
 
 # .tmux
 printf "${GREEN}.tmux${NC} "
