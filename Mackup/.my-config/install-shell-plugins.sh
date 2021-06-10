@@ -13,6 +13,7 @@ if [ "$(uname)" == "Darwin" ]; then
   defaults write com.apple.screencapture disable-shadow -bool TRUE
   Killall SystemUIServer
   # Install neovim
+  printf "${GREEN}neovim${NC}\n"
   brew install neovim
   # Install autojump
   printf "${GREEN}autojump${NC}\n"
@@ -24,6 +25,7 @@ if [ "$(uname)" == "Darwin" ]; then
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
   # GNU/Linux
   # Install neovim
+  printf "${GREEN}neovim${NC}\n"
   sudo apt-get install neovim
   # Install autojump
   printf "${GREEN}autojump${NC}\n"

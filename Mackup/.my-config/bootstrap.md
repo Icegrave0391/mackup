@@ -16,14 +16,18 @@ my-mackup
 ssh
 neovim
 vim
+tmux
+oh-my-tmux
 ```
 mackup restore
 
 ### 1. Install oh-my-zsh
 
 ```bash
+1. zsh
 sudo apt-get install zsh
 brew install zsh
+2. oh-my-zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 ```
 
@@ -37,4 +41,17 @@ plugins=(
   zsh-autosuggestions
   zsh-syntax-highlighting
 )
+```
+
+### 3. Neovim
+
+```bash
+git clone https://github.com/k-takata/minpac.git ~/.config/nvim/pack/minpac/opt/minpac
+```
+
+```
+PackStatus
+PackUpdate
+# if there is network problem, set proxy for git:
+git config --global http.proxy 'socks5://10.27.133.113:7890'
 ```
