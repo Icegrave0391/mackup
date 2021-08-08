@@ -7,6 +7,8 @@ function gi() { curl -sLw n https://www.toptal.com/developers/gitignore/api/$@ ;
 
 # nvim
 alias n='nvim'
+alias vi='nvim'
+alias vim='nvim'
 
 # plugins
 ## zsh-syntax-highlighting

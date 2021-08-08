@@ -80,4 +80,7 @@ else
   cp ~/.tmux/.tmux.conf.local ~/
 fi
 
+# git config
+git config --global user.name "Ji4n1ng"
+git config --global user.email "wjnmailg@gmail.com"
 

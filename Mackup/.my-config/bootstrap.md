@@ -36,12 +36,15 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 ```bash
 bash install-shell-plugins.sh
 vi ~/.zshrc
+ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(
   git
   zsh-autosuggestions
   zsh-syntax-highlighting
 )
 ```
+
+Install fonts: https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k
 
 ### 3. Neovim
 
