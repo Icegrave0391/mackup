@@ -77,6 +77,7 @@ if exists('*minpac#init')
   call minpac#add('vim-airline/vim-airline')
   call minpac#add('dracula/vim', {'name': 'dracula'})
   call minpac#add('tomasiser/vim-code-dark', {'name': 'codedark'})
+  call minpac#add('tpope/vim-surround')
 endif
 let g:airline_theme = 'codedark'
 let g:airline#extensions#tabline#enabled = 1      "tabline中当前buffer两端的分隔字符
