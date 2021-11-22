@@ -38,10 +38,37 @@ let do_syntax_sel_menu = 1
 " no lazyload
 let do_no_lazyload_menus = 1
 
+" OS specified features
+if has("mac")
+    "Mac
+    
+    " clipboard for mac
+    set clipboard=unnamed
+elseif has("win32")
+   "all Windows, ie win32,win64
+ 
+    " WSL yank support
+    let s:clip = '/mnt/c/Windows/System32/clip.exe'  " change this path according to your mount point
+    if executable(s:clip)
+      augroup WSLYank
+        autocmd!
+        autocmd TextYankPost * if v:event.operator ==# 'y' | call system('cat |' . s:clip, @0) | endif
+      augroup END
+    endif
+    " WSL paste from clipboard
+    "map <silent> "=p :r !powershell.exe -Command Get-Clipboard
+    "map! <silent> <C-r>= :r !powershell.exe -Command Get-Clipboard
+    "noremap "+p :exe 'norm a'.system('/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -Command Get-Clipboard')
 
-" clipboard for windows
-"set clipboard=unnamed
-"set clipboard=unnamedplus
+elseif has("win32unix")
+    "Cygwin
+elseif has("bsd")
+    "BSD-based, ie freeBSD"
+elseif has("linux")
+    "Linux
+endif
+
+
 
 " copy (write) highlighted text to .vimbuffer
 "vmap <C-c> y:new ~/.vimbuffer<CR>VGp:x<CR> \| :!cat ~/.vimbuffer \| clip.exe <CR><CR>
@@ -49,20 +76,6 @@ let do_no_lazyload_menus = 1
 "map <C-v> :r ~/.vimbuffer<CR>
 
 set relativenumber
-
-" WSL yank support
-let s:clip = '/mnt/c/Windows/System32/clip.exe'  " change this path according to your mount point
-if executable(s:clip)
-  augroup WSLYank
-    autocmd!
-    autocmd TextYankPost * if v:event.operator ==# 'y' | call system('cat |' . s:clip, @0) | endif
-  augroup END
-endif
-" WSL paste from clipboard
-"map <silent> "=p :r !powershell.exe -Command Get-Clipboard
-"map! <silent> <C-r>= :r !powershell.exe -Command Get-Clipboard
-"noremap "+p :exe 'norm a'.system('/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -Command Get-Clipboard')
-
 " minpac
 if exists('*minpac#init')
   " Minpac is loaded.
