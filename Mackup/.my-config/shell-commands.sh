@@ -10,6 +10,3 @@ alias n='nvim'
 alias vi='nvim'
 alias vim='nvim'
 
-# plugins
-## zsh-syntax-highlighting
-source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

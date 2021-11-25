@@ -75,7 +75,9 @@ endif
 " paste from buffer
 "map <C-v> :r ~/.vimbuffer<CR>
 
-set relativenumber
+set number
+"set rnu
+"set relativenumber
 " minpac
 if exists('*minpac#init')
   " Minpac is loaded.
