@@ -10,7 +10,15 @@ set -g theme_date_format "+%Y-%m-%d %H:%M:%S"
 # conda
 source /home/jianing/miniconda3/etc/fish/conf.d/conda.fish
 
+# rust
+#source "$HOME/.cargo/env"
+set PATH $HOME/.cargo/bin $PATH
+
 if status is-interactive
     # Commands to run in interactive sessions can go here
 end
 
+
+set -gx WASMTIME_HOME "$HOME/.wasmtime"
+
+string match -r ".wasmtime" "$PATH" > /dev/null; or set -gx PATH "$WASMTIME_HOME/bin" $PATH
