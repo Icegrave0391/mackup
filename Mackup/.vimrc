@@ -19,7 +19,7 @@ set nobackup
 set undodir=~/.vim/undodir
 if !isdirectory(&undodir)
   call mkdir(&undodir, 'p', 0700)
-  endif
+endif
 
 " Mouse
 if has('mouse')
@@ -46,26 +46,26 @@ if has("mac")
     set clipboard=unnamed
 elseif has("win32")
    "all Windows, ie win32,win64
- 
-    " WSL yank support
-    let s:clip = '/mnt/c/Windows/System32/clip.exe'  " change this path according to your mount point
-    if executable(s:clip)
-      augroup WSLYank
-        autocmd!
-        autocmd TextYankPost * if v:event.operator ==# 'y' | call system('cat |' . s:clip, @0) | endif
-      augroup END
-    endif
-    " WSL paste from clipboard
-    "map <silent> "=p :r !powershell.exe -Command Get-Clipboard
-    "map! <silent> <C-r>= :r !powershell.exe -Command Get-Clipboard
-    "noremap "+p :exe 'norm a'.system('/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -Command Get-Clipboard')
-
 elseif has("win32unix")
     "Cygwin
 elseif has("bsd")
     "BSD-based, ie freeBSD"
 elseif has("linux")
     "Linux
+elseif has("unix")
+    let lines = readfile("/proc/version")
+    if lines[0] =~ "WSL"
+        " WSL
+
+        " WSL yank support
+        let s:clip = '/mnt/c/Windows/System32/clip.exe'  " change this path according to your mount point
+        if executable(s:clip)
+            augroup WSLYank
+                autocmd!
+                autocmd TextYankPost * if v:event.operator ==# 'y' | call system('cat |' . s:clip, @0) | endif
+            augroup END
+        endif
+    endif
 endif
 
 
