@@ -37,19 +37,24 @@ if [ "$(uname)" == "Darwin" ]; then
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     # Linux
 
+    sudo apt install curl -y
+
     # mackup
     printf "${GREEN}mackup${NC}\n"
-    pip3 install --system mackup
+    sudo pip3 install --system mackup
     # Install neovim
     printf "${GREEN}neovim${NC}\n"
-    sudo apt-get install neovim
+    sudo apt-get install neovim -y
     # Install autojump
     printf "${GREEN}autojump${NC}\n"
-    sudo apt-get install autojump
+    sudo apt-get install autojump -y
     echo ". /usr/share/autojump/autojump.sh" >> ~/.zshrc
     # Install tmux
     printf "${GREEN}tmux${NC}\n"
-    sudo apt-get install tmux
+    sudo apt-get install tmux -y
+    # Install ranger
+    printf "${GREEN}ranger${NC}\n"
+    sudo apt-get install ranger -y
     # fish
     printf "${GREEN}fish${NC}\n"
     sudo apt-add-repository ppa:fish-shell/release-3
@@ -81,6 +86,9 @@ git config --global core.editor "nvim"
 
 # Copy mackup config
 cp ./.mackup.cfg ~/.mackup.cfg
+
+# nvim minipac
+git clone https://github.com/k-takata/minpac.git ~/.config/nvim/pack/minpac/opt/minpac
 
 mackup restore
 

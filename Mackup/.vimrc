@@ -52,6 +52,8 @@ elseif has("bsd")
     "BSD-based, ie freeBSD"
 elseif has("linux")
     "Linux
+    set clipboard=unnamedplus
+
 elseif has("unix")
     let lines = readfile("/proc/version")
     if lines[0] =~ "WSL"

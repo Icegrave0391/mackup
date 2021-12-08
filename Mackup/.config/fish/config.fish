@@ -18,7 +18,15 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
 end
 
-
+# wasmtime
 set -gx WASMTIME_HOME "$HOME/.wasmtime"
-
 string match -r ".wasmtime" "$PATH" > /dev/null; or set -gx PATH "$WASMTIME_HOME/bin" $PATH
+
+# alias
+alias n='nvim'
+alias vi='nvim'
+alias vim='nvim'
+alias r='ranger'
+
+# autojump
+source /usr/share/autojump/autojump.fish
