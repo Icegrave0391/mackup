@@ -33,6 +33,10 @@ if [ "$(uname)" == "Darwin" ]; then
     # fish
     printf "${GREEN}fish${NC}\n"
     brew install fish
+    # ranger
+    printf "${GREEN}ranger${NC}\n"
+    brew install ranger
+    brew install highlight
 
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     # Linux
@@ -55,6 +59,7 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     # Install ranger
     printf "${GREEN}ranger${NC}\n"
     sudo apt-get install ranger -y
+    sudo apt-get install highlight -y
     # fish
     printf "${GREEN}fish${NC}\n"
     sudo apt-add-repository ppa:fish-shell/release-3
