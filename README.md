@@ -3,17 +3,18 @@
 - mac: `brew install mackup`
 - linux: `pip3 install --system mackup`
 
-### 1. Run bootstrap.sh
+### 1. Run `bootstrap.sh`
 
-Note: do not use sudo to run this script.
+> **Note: do not use `sudo` to run this script.**
 
 ```
+(optional) chmod +x bootstrap.sh
 bash bootstrap.sh
 ```
 
 ### 2. Install [NerdFonts](https://www.nerdfonts.com/)
 
-JetBrainsMono Nerd Font
+Recommend: JetBrainsMono Nerd Font
 
 ### 3. Neovim
 

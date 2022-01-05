@@ -28,7 +28,6 @@ if [ "$(uname)" == "Darwin" ]; then
     # Install autojump
     printf "${GREEN}autojump${NC}\n"
     brew install autojump
-    echo "[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh" >> ~/.zshrc
     # Install tmux
     printf "${GREEN}tmux${NC}\n"
     brew install tmux
@@ -54,7 +53,6 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     # Install autojump
     printf "${GREEN}autojump${NC}\n"
     sudo apt-get install autojump -y
-    echo ". /usr/share/autojump/autojump.sh" >> ~/.zshrc
     # Install tmux
     printf "${GREEN}tmux${NC}\n"
     sudo apt-get install tmux -y
