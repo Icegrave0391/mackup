@@ -70,16 +70,16 @@ fi
 # shell-commands
 echo "source ~/GitHub/config/shell-commands.sh" >> ~/.bashrc
 
-# .tmux
-printf "${GREEN}.tmux${NC} "
-if [ -d "$HOME/.tmux" ]; then
-    printf "exists\n"
-else
-    printf "installing\n"
-    git clone https://github.com/gpakosz/.tmux.git ~/.tmux
-    ln -s -f ~/.tmux/.tmux.conf ~/
-    cp ~/.tmux/.tmux.conf.local ~/
-fi
+## .tmux
+# printf "${GREEN}.tmux${NC} "
+# if [ -d "$HOME/.tmux" ]; then
+#     printf "exists\n"
+# else
+#     printf "installing\n"
+#     git clone https://github.com/gpakosz/.tmux.git ~/.tmux
+#     ln -s -f ~/.tmux/.tmux.conf ~/
+#     cp ~/.tmux/.tmux.conf.local ~/
+# fi
 
 # git config
 git config --global user.name "Ji4n1ng"
@@ -90,7 +90,7 @@ git config --global core.editor "nvim"
 git clone https://github.com/k-takata/minpac.git ~/.config/nvim/pack/minpac/opt/minpac
 
 # Copy mackup config
-ln -s ~/GitHub/config/.mackup.cfg ~/.mackup.cfg
+ln -s -f ~/GitHub/config/.mackup.cfg ~/.mackup.cfg
 mackup restore
 
 # oh my fish
