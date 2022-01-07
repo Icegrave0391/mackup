@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Do not use `sudo` to run this script
+# $ bash bootstrap.sh
 
 # color
 GREEN='\033[0;32m'
@@ -26,7 +28,6 @@ if [ "$(uname)" == "Darwin" ]; then
     # Install autojump
     printf "${GREEN}autojump${NC}\n"
     brew install autojump
-    echo "[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh" >> ~/.zshrc
     # Install tmux
     printf "${GREEN}tmux${NC}\n"
     brew install tmux
@@ -52,7 +53,6 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     # Install autojump
     printf "${GREEN}autojump${NC}\n"
     sudo apt-get install autojump -y
-    echo ". /usr/share/autojump/autojump.sh" >> ~/.zshrc
     # Install tmux
     printf "${GREEN}tmux${NC}\n"
     sudo apt-get install tmux -y
@@ -68,7 +68,7 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 fi
 
 # shell-commands
-echo "source ~/.my-config/shell-commands.sh" >> ~/.bashrc
+echo "source ~/GitHub/config/shell-commands.sh" >> ~/.bashrc
 
 # .tmux
 printf "${GREEN}.tmux${NC} "
@@ -86,15 +86,11 @@ git config --global user.name "Ji4n1ng"
 git config --global user.email "wjnmailg@gmail.com"
 git config --global core.editor "nvim"
 
-# Install fonts: 
-# https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k
-
-# Copy mackup config
-cp ./.mackup.cfg ~/.mackup.cfg
-
 # nvim minipac
 git clone https://github.com/k-takata/minpac.git ~/.config/nvim/pack/minpac/opt/minpac
 
+# Copy mackup config
+ln -s ~/GitHub/config/.mackup.cfg ~/.mackup.cfg
 mackup restore
 
 # oh my fish
@@ -102,4 +98,3 @@ printf "${GREEN}oh my fish${NC}\n"
 curl https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install | fish
 # theme
 # omf install bobthefish
-
