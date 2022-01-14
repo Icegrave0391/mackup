@@ -7,8 +7,19 @@ set -g theme_date_format "+%Y-%m-%d %H:%M:%S"
 #set -g theme_newline_cursor yes
 #set -g theme_newline_prompt '$ '
 
-# conda
-source /home/jianing/miniconda3/etc/fish/conf.d/conda.fish
+switch (uname)
+    case Linux
+        # conda
+        source /home/jianing/miniconda3/etc/fish/conf.d/conda.fish
+        # autojump
+        source /usr/share/autojump/autojump.fish
+
+    case Darwin
+        # conda
+        source /Users/jianing/opt/miniconda3/etc/fish/conf.d/conda.fish
+        # autojump
+        source /usr/local/share/autojump/autojump.fish
+end
 
 # rust
 #source "$HOME/.cargo/env"
@@ -28,5 +39,3 @@ alias vi='nvim'
 alias vim='nvim'
 alias r='ranger'
 
-# autojump
-source /usr/share/autojump/autojump.fish

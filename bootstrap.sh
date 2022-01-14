@@ -59,6 +59,8 @@ if [ "$(uname)" == "Darwin" ]; then
     # stats
     brew install --cask stats
 
+    # Copy mackup config
+    ln -s -f ~/GitHub/config/.mackup.cfg.mac ~/.mackup.cfg
 
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     # Linux
@@ -86,6 +88,9 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     sudo apt-add-repository ppa:fish-shell/release-3
     sudo apt-get update
     sudo apt-get install fish -y
+
+    # Copy mackup config
+    ln -s -f ~/GitHub/config/.mackup.cfg ~/.mackup.cfg
 fi
 
 # shell-commands
@@ -110,8 +115,7 @@ git config --global core.editor "nvim"
 # nvim minipac
 git clone https://github.com/k-takata/minpac.git ~/.config/nvim/pack/minpac/opt/minpac
 
-# Copy mackup config
-ln -s -f ~/GitHub/config/.mackup.cfg ~/.mackup.cfg
+# restore
 mackup restore
 
 # oh my fish

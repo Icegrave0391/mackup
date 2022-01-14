@@ -1,0 +1,11 @@
+[storage]
+engine = file_system
+path = /Users/jianing/GitHub/config
+[applications_to_sync]
+ssh
+neovim
+vim
+tmux
+oh-my-tmux
+fish
+oh-my-fish
