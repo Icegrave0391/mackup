@@ -1,7 +1,7 @@
 ### 0. Install mackup
 
-- mac: `brew install mackup`
-- linux: `pip3 install --system mackup`
+- macOS: `brew install mackup`
+- Linux: `pip3 install --system mackup`
 
 ### 1. Run `bootstrap.sh`
 
