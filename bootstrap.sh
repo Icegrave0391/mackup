@@ -18,17 +18,23 @@ if [ "$(uname)" == "Darwin" ]; then
     # Remove Screenshot Shadow
     defaults write com.apple.screencapture disable-shadow -bool TRUE
     Killall SystemUIServer
+    # xcodebuild
+    sudo xcodebuild -license accept
 
+    # Command Tools
+    # git (not Apple git)
+    printf "${GREEN}git${NC}\n"
+    brew install git
     # mackup
     printf "${GREEN}mackup${NC}\n"
     brew install mackup
-    # Install neovim
+    # neovim
     printf "${GREEN}neovim${NC}\n"
     brew install neovim
-    # Install autojump
+    # autojump
     printf "${GREEN}autojump${NC}\n"
     brew install autojump
-    # Install tmux
+    # tmux
     printf "${GREEN}tmux${NC}\n"
     brew install tmux
     # fish
@@ -38,6 +44,21 @@ if [ "$(uname)" == "Darwin" ]; then
     printf "${GREEN}ranger${NC}\n"
     brew install ranger
     brew install highlight
+
+    # Softwares
+    # OpenInTerminal
+    printf "${GREEN}OpenInTerminal${NC}\n"
+    brew install --cask openinterminal
+    brew install --cask openinterminal-lite
+    brew install --cask openineditor-lite
+    # IINA
+    printf "${GREEN}${NC}\n"
+    brew install --cask iina
+    # Mos
+    brew install --cask mos
+    # stats
+    brew install --cask stats
+
 
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     # Linux
