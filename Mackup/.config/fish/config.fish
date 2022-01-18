@@ -1,5 +1,5 @@
 # bobthefish theme settings
-set -g theme_display_hostname no
+set -g theme_display_hostname yes
 set -g theme_display_user no
 set -g theme_date_format "+%Y-%m-%d %H:%M:%S"
 #set -g theme_title_display_path no
