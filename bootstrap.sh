@@ -18,8 +18,10 @@ if [ "$(uname)" == "Darwin" ]; then
     # Remove Screenshot Shadow
     defaults write com.apple.screencapture disable-shadow -bool TRUE
     Killall SystemUIServer
-    # xcodebuild
+    # xcodebuild to accelerate launching iTerm2
     sudo xcodebuild -license accept
+    # hold key to repeat
+    defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
     # Command Tools
     # git (not Apple git)
@@ -106,11 +108,6 @@ echo "source ~/GitHub/config/shell-commands.sh" >> ~/.bashrc
 #     ln -s -f ~/.tmux/.tmux.conf ~/
 #     cp ~/.tmux/.tmux.conf.local ~/
 # fi
-
-# git config
-git config --global user.name "Ji4n1ng"
-git config --global user.email "wjnmailg@gmail.com"
-git config --global core.editor "nvim"
 
 # nvim minipac
 git clone https://github.com/k-takata/minpac.git ~/.config/nvim/pack/minpac/opt/minpac
