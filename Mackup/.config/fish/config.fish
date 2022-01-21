@@ -2,7 +2,8 @@
 set -g theme_display_hostname yes
 set -g theme_display_user no
 set -g theme_date_format "+%Y-%m-%d %H:%M:%S"
-set -g theme_color_scheme dracula
+#set -g theme_color_scheme dracula
+set -g theme_color_scheme nord 
 #set -g theme_title_display_path no
 #set -g theme_title_display_user no
 #set -g theme_newline_cursor yes
