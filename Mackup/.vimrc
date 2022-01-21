@@ -5,14 +5,36 @@ packadd! dracula
 if (has("termguicolors"))
   set termguicolors
 endif
-syntax enable
-colorscheme codedark "dracula
+colorscheme dracula "codedark
+" Enable transparent background
+hi Normal guibg=NONE ctermbg=NONE
+"highlight clear CursorLineNR
+
+" Enable syntax highlighting
+syntax on
+" Highlight current line
+" set cursorline
+" Highlight searches
+set hlsearch
+" Ignore case of searches
+set ignorecase
+" Enable line numbers
+set number
+"set rnu
+"set relativenumber
+
+filetype plugin indent on
+" show existing tab with 4 spaces width
+set tabstop=4
+" when indenting with '>', use 4 spaces width
+set shiftwidth=4
+" On pressing tab, insert 4 spaces
+set expandtab
 
 " Font
-" Linux 和 Windows 不同，不能用 '_' 取代空格
-set guifont=DejaVu\ Sans\ Mono\ 10
+"set guifont=DejaVu\ Sans\ Mono\ 10
 "set guifont=Source\ Code\ Pro\ 11
-set guifontwide=Noto\ Sans\ Mono\ CJK\ SC\ 11
+"set guifontwide=Noto\ Sans\ Mono\ CJK\ SC\ 11
 
 " Cache
 set nobackup
@@ -77,9 +99,6 @@ endif
 " paste from buffer
 "map <C-v> :r ~/.vimbuffer<CR>
 
-set number
-"set rnu
-"set relativenumber
 " minpac
 if exists('*minpac#init')
   " Minpac is loaded.
@@ -88,16 +107,53 @@ if exists('*minpac#init')
 	  
   " Other plugins
   call minpac#add('tpope/vim-eunuch')
-  call minpac#add('yegappan/mru')
   call minpac#add('preservim/nerdtree')
-  call minpac#add('embark-theme/vim', {'name': 'embark'})
   call minpac#add('vim-airline/vim-airline')
+  call minpac#add('embark-theme/vim', {'name': 'embark'})
   call minpac#add('dracula/vim', {'name': 'dracula'})
   call minpac#add('tomasiser/vim-code-dark', {'name': 'codedark'})
   call minpac#add('tpope/vim-surround')
 endif
-let g:airline_theme = 'codedark'
+let g:airline_theme = 'dracula' "'codedark'
 let g:airline#extensions#tabline#enabled = 1      "tabline中当前buffer两端的分隔字符
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+
+" unicode symbols
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.colnr = ' ㏇:'
+let g:airline_symbols.colnr = ' ℅:'
+let g:airline_symbols.crypt = '🔒'
+let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.linenr = ' ␊:'
+let g:airline_symbols.linenr = ' ␤:'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.maxlinenr = '㏑'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.spell = 'Ꞩ'
+let g:airline_symbols.notexists = 'Ɇ'
+let g:airline_symbols.whitespace = 'Ξ'
+
+" powerline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.colnr = ' :'
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ' :'
+let g:airline_symbols.maxlinenr = '☰ '
+let g:airline_symbols.dirty='⚡'
+
 
 if has('eval')
   " Minpac commands
@@ -106,43 +162,3 @@ if has('eval')
   command! PackStatus packadd minpac | source $MYVIMRC | call minpac#status()
 endif
 
-if !has('gui_running') 
-  " 设置文本菜单 
-  if has('wildmenu') 
-    set wildmenu 
-    set cpoptions-=< 
-    set wildcharm=<C-Z> 
-    nnoremap <F10>       :emenu <C-Z>
-    inoremap <F10> <C-O> :emenu <C-Z>
-  endif
-endif
-
-" For old vim (Under 8.0)
-if !has('patch-8.0.210')
-  " 进入插入模式时启用括号粘贴模式
-  let &t_SI .= "\<Esc>[?2004h"
-  " 退出插入模式时停用括号粘贴模式
-  let &t_EI .= "\<Esc>[?2004l"
-  " 见到 <Esc>[200~ 就调用 XTermPasteBegin
-  inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
-
-  function! XTermPasteBegin()
-    " 设置使用 <Esc>[201~ 关闭粘贴模式
-    set pastetoggle=<Esc>[201~
-    " 开启粘贴模式
-    set paste
-    return ""
-  endfunction
-endif
-
-"if v:version >= 800
-"  packadd! editexisting
-"endif
-
-filetype plugin indent on
-" show existing tab with 4 spaces width
-set tabstop=4
-" when indenting with '>', use 4 spaces width
-set shiftwidth=4
-" On pressing tab, insert 4 spaces
-set expandtab

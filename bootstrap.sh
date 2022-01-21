@@ -13,14 +13,14 @@ if [ "$(uname)" == "Darwin" ]; then
     # macOS
 
     # Settings
-    # Install App from Anywhere
+    # Install app from anywhere
     sudo spctl --master-disable
-    # Remove Screenshot Shadow
+    # Remove screenshot shadow
     defaults write com.apple.screencapture disable-shadow -bool TRUE
     Killall SystemUIServer
-    # xcodebuild to accelerate launching iTerm2
+    # To accelerate launching iTerm2
     sudo xcodebuild -license accept
-    # hold key to repeat
+    # Hold key to repeat
     defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
     # Command Tools
@@ -54,11 +54,13 @@ if [ "$(uname)" == "Darwin" ]; then
     brew install --cask openinterminal-lite
     brew install --cask openineditor-lite
     # IINA
-    printf "${GREEN}${NC}\n"
+    printf "${GREEN}IINA${NC}\n"
     brew install --cask iina
     # Mos
+    printf "${GREEN}Mos${NC}\n"
     brew install --cask mos
     # stats
+    printf "${GREEN}stats${NC}\n"
     brew install --cask stats
 
     # Copy mackup config

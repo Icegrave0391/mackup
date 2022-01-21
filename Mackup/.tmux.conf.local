@@ -46,23 +46,43 @@ tmux_conf_new_session_prompt=false
 tmux_conf_24b_colour=false
 
 # default theme
-tmux_conf_theme_colour_1="#080808"    # dark gray
+#tmux_conf_theme_colour_1="#080808"    # dark gray
+#tmux_conf_theme_colour_2="#303030"    # gray
+#tmux_conf_theme_colour_3="#8a8a8a"    # light gray
+#tmux_conf_theme_colour_4="#00afff"    # light blue
+#tmux_conf_theme_colour_5="#ffff00"    # yellow
+#tmux_conf_theme_colour_6="#080808"    # dark gray
+#tmux_conf_theme_colour_7="#e4e4e4"    # white
+#tmux_conf_theme_colour_8="#080808"    # dark gray
+#tmux_conf_theme_colour_9="#ffff00"    # yellow
+#tmux_conf_theme_colour_10="#ff00af"   # pink
+#tmux_conf_theme_colour_11="#5fff00"   # green
+#tmux_conf_theme_colour_12="#8a8a8a"   # light gray
+#tmux_conf_theme_colour_13="#e4e4e4"   # white
+#tmux_conf_theme_colour_14="#080808"   # dark gray
+#tmux_conf_theme_colour_15="#080808"   # dark gray
+#tmux_conf_theme_colour_16="#d70000"   # red
+#tmux_conf_theme_colour_17="#e4e4e4"   # white
+
+tmux_conf_theme_colour_1="#1a1a1a"    # dark gray
 tmux_conf_theme_colour_2="#303030"    # gray
 tmux_conf_theme_colour_3="#8a8a8a"    # light gray
-tmux_conf_theme_colour_4="#00afff"    # light blue
-tmux_conf_theme_colour_5="#ffff00"    # yellow
-tmux_conf_theme_colour_6="#080808"    # dark gray
-tmux_conf_theme_colour_7="#e4e4e4"    # white
-tmux_conf_theme_colour_8="#080808"    # dark gray
-tmux_conf_theme_colour_9="#ffff00"    # yellow
-tmux_conf_theme_colour_10="#ff00af"   # pink
-tmux_conf_theme_colour_11="#5fff00"   # green
-tmux_conf_theme_colour_12="#8a8a8a"   # light gray
-tmux_conf_theme_colour_13="#e4e4e4"   # white
-tmux_conf_theme_colour_14="#080808"   # dark gray
-tmux_conf_theme_colour_15="#080808"   # dark gray
-tmux_conf_theme_colour_16="#d70000"   # red
-tmux_conf_theme_colour_17="#e4e4e4"   # white
+tmux_conf_theme_colour_4="#5c78ff"    # light blue
+tmux_conf_theme_colour_5="#ffc72a"    # yellow
+tmux_conf_theme_colour_6="#f1f1f1"    # left_fg 1
+tmux_conf_theme_colour_7="#f1f1f1"    # left_fg 2
+tmux_conf_theme_colour_8="#1a1a1a"    # left_fg 3
+tmux_conf_theme_colour_9="#7129ff"    # left_bg 1
+tmux_conf_theme_colour_10="#685aff"   # left_bg 2
+tmux_conf_theme_colour_11="#ff9a28"   # left_bg 3
+tmux_conf_theme_colour_12="#8a8a8a"   # right_fg 1
+tmux_conf_theme_colour_13="#2f2f2f"   # right_fg 2
+tmux_conf_theme_colour_14="#ffc72a"   # right_fg 3
+tmux_conf_theme_colour_15="#ff00b1"   # right_fg 4
+tmux_conf_theme_colour_16="#1a1a1a"   # right_bg 1
+tmux_conf_theme_colour_17="#ba5aff"   # right_bg 2
+tmux_conf_theme_colour_18="#2b4fff"   # right_bg 3
+tmux_conf_theme_colour_19="#121455"   # right_bg 4
 
 # default theme (ansi)
 #tmux_conf_theme_colour_1="colour0"
@@ -226,18 +246,20 @@ tmux_conf_theme_right_separator_sub='\uE0B3'  #   PowerlineSymbols.otf font, see
 #     - #{uptime_s}
 #     - #{username}
 #     - #{username_ssh}
-tmux_conf_theme_status_left=" ❐ #S | ↑#{?uptime_y, #{uptime_y}y,}#{?uptime_d, #{uptime_d}d,}#{?uptime_h, #{uptime_h}h,}#{?uptime_m, #{uptime_m}m,} "
-tmux_conf_theme_status_right=" #{prefix}#{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},} , %R , %d %b | #{username}#{root} | #{hostname} "
+tmux_conf_theme_status_left=" ⚡️ #S "
+tmux_conf_theme_status_right=" #{prefix}#{mouse}#{pairing}#{synchronized} | %R %b %d | #{username}#{root}@#{hostname} #{?battery_percentage,#{battery_percentage},} "
+##{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},} 
+#↑#{?uptime_y, #{uptime_y}y,}#{?uptime_d, #{uptime_d}d,}#{?uptime_h, #{uptime_h}h,}#{?uptime_m, #{uptime_m}m,} 
 
 # status left style
-tmux_conf_theme_status_left_fg="$tmux_conf_theme_colour_6,$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_8"
+tmux_conf_theme_status_left_fg="$tmux_conf_theme_colour_5,$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_8"
 tmux_conf_theme_status_left_bg="$tmux_conf_theme_colour_9,$tmux_conf_theme_colour_10,$tmux_conf_theme_colour_11"
 tmux_conf_theme_status_left_attr="bold,none,none"
 
 # status right style
-tmux_conf_theme_status_right_fg="$tmux_conf_theme_colour_12,$tmux_conf_theme_colour_13,$tmux_conf_theme_colour_14"
-tmux_conf_theme_status_right_bg="$tmux_conf_theme_colour_15,$tmux_conf_theme_colour_16,$tmux_conf_theme_colour_17"
-tmux_conf_theme_status_right_attr="none,none,bold"
+tmux_conf_theme_status_right_fg="$tmux_conf_theme_colour_3,$tmux_conf_theme_colour_6,$tmux_conf_theme_colour_15"
+tmux_conf_theme_status_right_bg="$tmux_conf_theme_colour_1,$tmux_conf_theme_colour_18,$tmux_conf_theme_colour_19"
+tmux_conf_theme_status_right_attr="none,bold,bold"
 
 # pairing indicator
 tmux_conf_theme_pairing="⚇"                 # U+2687
@@ -302,10 +324,11 @@ tmux_conf_battery_vbar_palette="gradient"
 #tmux_conf_battery_vbar_palette="#d70000,#ff5f00,#5fff00"  # red, orange, green
 
 # symbols used to indicate whether battery is charging or discharging
-tmux_conf_battery_status_charging="↑"       # U+2191
-tmux_conf_battery_status_discharging="↓"    # U+2193
-#tmux_conf_battery_status_charging="🔌"     # U+1F50C
-#tmux_conf_battery_status_discharging="🔋"  # U+1F50B
+#tmux_conf_battery_status_charging="↑"       # U+2191
+#tmux_conf_battery_status_discharging="↓"    # U+2193
+tmux_conf_battery_status_charging="🔌"     # U+1F50C
+tmux_conf_battery_status_discharging="🔋"  # U+1F50B
+
 
 # clock style (when you hit <prefix> + t)
 # you may want to use %I:%M %p in place of %R in tmux_conf_theme_status_right

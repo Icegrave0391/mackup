@@ -2,6 +2,7 @@
 set -g theme_display_hostname yes
 set -g theme_display_user no
 set -g theme_date_format "+%Y-%m-%d %H:%M:%S"
+set -g theme_color_scheme dracula
 #set -g theme_title_display_path no
 #set -g theme_title_display_user no
 #set -g theme_newline_cursor yes
@@ -34,7 +35,7 @@ set -gx WASMTIME_HOME "$HOME/.wasmtime"
 string match -r ".wasmtime" "$PATH" > /dev/null; or set -gx PATH "$WASMTIME_HOME/bin" $PATH
 
 # alias
-alias n='nvim'
+alias v='nvim'
 alias vi='nvim'
 alias vim='nvim'
 alias r='ranger'
