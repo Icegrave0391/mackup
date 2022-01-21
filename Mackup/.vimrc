@@ -73,7 +73,7 @@ let do_no_lazyload_menus = 1
 " OS specified features
 if has("mac")
     "Mac
-    
+
     " clipboard for mac
     set clipboard=unnamed
 elseif has("win32")
@@ -111,23 +111,23 @@ endif
 
 " minpac
 if exists('*minpac#init')
-  " Minpac is loaded.
-  call minpac#init()
-  call minpac#add('k-takata/minpac', {'type': 'opt'})
-	  
-  " Other plugins
-  call minpac#add('tpope/vim-eunuch')
-  call minpac#add('preservim/nerdtree')
-  call minpac#add('vim-airline/vim-airline')
-  call minpac#add('embark-theme/vim', {'name': 'embark'})
-  call minpac#add('dracula/vim', {'name': 'dracula'})
-  call minpac#add('tomasiser/vim-code-dark', {'name': 'codedark'})
-  call minpac#add('tpope/vim-surround')
+    " Minpac is loaded.
+    call minpac#init()
+    call minpac#add('k-takata/minpac', {'type': 'opt'})
+
+    " Other plugins
+    call minpac#add('tpope/vim-eunuch')
+    call minpac#add('preservim/nerdtree')
+    call minpac#add('vim-airline/vim-airline')
+    call minpac#add('embark-theme/vim', {'name': 'embark'})
+    call minpac#add('dracula/vim', {'name': 'dracula'})
+    call minpac#add('tomasiser/vim-code-dark', {'name': 'codedark'})
+    call minpac#add('tpope/vim-surround')
 endif
 let g:airline_theme = 'dracula' "'codedark'
 let g:airline#extensions#tabline#enabled = 1      "tabline中当前buffer两端的分隔字符
 if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
+    let g:airline_symbols = {}
 endif
 
 " unicode symbols
@@ -166,9 +166,9 @@ let g:airline_symbols.dirty='⚡'
 
 
 if has('eval')
-  " Minpac commands
-  command! PackUpdate packadd minpac | source $MYVIMRC | call minpac#update('', {'do': 'call minpac#status()'})
-  command! PackClean  packadd minpac | source $MYVIMRC | call minpac#clean()
-  command! PackStatus packadd minpac | source $MYVIMRC | call minpac#status()
+    " Minpac commands
+    command! PackUpdate packadd minpac | source $MYVIMRC | call minpac#update('', {'do': 'call minpac#status()'})
+    command! PackClean  packadd minpac | source $MYVIMRC | call minpac#clean()
+    command! PackStatus packadd minpac | source $MYVIMRC | call minpac#status()
 endif
 
