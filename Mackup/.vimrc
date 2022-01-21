@@ -1,13 +1,23 @@
 set enc=utf-8
 set nocompatible
 
+" Color scheme
 packadd! dracula
-if (has("termguicolors"))
-  set termguicolors
-endif
 colorscheme dracula "codedark
+
+" Tmux color
+if exists('$TMUX')
+    " Colors in tmux
+    let &t_8f = "<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "<Esc>[48;2;%lu;%lu;%lum"
+endif
+if (has("termguicolors"))
+    set termguicolors
+endif
+set background=dark
+
 " Enable transparent background
-hi Normal guibg=NONE ctermbg=NONE
+"hi Normal guibg=NONE ctermbg=NONE
 "highlight clear CursorLineNR
 
 " Enable syntax highlighting
@@ -40,15 +50,15 @@ set expandtab
 set nobackup
 set undodir=~/.vim/undodir
 if !isdirectory(&undodir)
-  call mkdir(&undodir, 'p', 0700)
+    call mkdir(&undodir, 'p', 0700)
 endif
 
 " Mouse
 if has('mouse')
-  if has('gui_running') || (&term =~ 'xterm' && !has('mac'))
-    set mouse=a
-  else
-    set mouse=nvi
+    if has('gui_running') || (&term =~ 'xterm' && !has('mac'))
+        set mouse=a
+    else
+        set mouse=nvi
   endif
 endif
 
