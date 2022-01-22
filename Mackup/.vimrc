@@ -3,7 +3,7 @@ set nocompatible
 
 " Color scheme
 packadd! dracula
-colorscheme dracula "codedark
+colorscheme codedark "dracula
 
 " Tmux color
 if exists('$TMUX')
@@ -124,7 +124,7 @@ if exists('*minpac#init')
     call minpac#add('tomasiser/vim-code-dark', {'name': 'codedark'})
     call minpac#add('tpope/vim-surround')
 endif
-let g:airline_theme = 'dracula' "'codedark'
+let g:airline_theme = 'codedark' "'dracula'
 let g:airline#extensions#tabline#enabled = 1      "tabline中当前buffer两端的分隔字符
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
