@@ -40,13 +40,13 @@ if [ "$(uname)" == "Darwin" ]; then
     # Settings
     # Install app from anywhere
     sudo spctl --master-disable
-    # Remove screenshot shadow
-    defaults write com.apple.screencapture disable-shadow -bool TRUE
+    
     Killall SystemUIServer
     # To accelerate launching iTerm2
     sudo xcodebuild -license accept
-    # Hold key to repeat
-    defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+    
+    chmod +x osx_preference_setup.sh
+    bash osx_preference_setup.sh
 
     # Command Tools
     # git (not Apple git)
