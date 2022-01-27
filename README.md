@@ -30,4 +30,8 @@ git config --global http.proxy 'socks5://10.27.133.113:7890'
 **macOS `defaults`**    
 
 The command `defaults` under macOS system is used for interaction with applications preferences, and we could adjust programs preference by this command. For examples and domains, please refer to [this website](https://macos-defaults.com/#%F0%9F%99%8B-what-s-a-defaults-command).    
-For the domains binded to Apple's system applications, please refer to [real-world-systems](http://www.real-world-systems.com/docs/defaults.1.html).
+For the domains binded to Apple's system applications, please refer to [real-world-systems](http://www.real-world-systems.com/docs/defaults.1.html).    
+    
+**macOS TextInput**    
+
+This document [symbol codes](https://sites.psu.edu/symbolcodes/mac/codemac/) shows how to input some special symbols via the combination of different hotkeys.
