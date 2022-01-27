@@ -7,7 +7,32 @@ GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 RED='\033[0;31m'
 
-# Install miniconda
+# install prefix
+PREFIX="/usr/local/"
+
+# Install miniconda3 (only for macOS now)
+CONDA_SCRIPT="conda_install.sh"
+CONDA_URL=""
+if [ "$(uname)" == "Darwin" ]; then
+    # macOS
+    brew install wget
+    if [ "$(uname -m)" == "arm64" ]; then
+        # Apple Silicon
+        CONDA_URL="https://repo.anaconda.com/miniconda/Miniconda3-py38_4.10.1-MacOSX-arm64.sh"
+    elif [ "$(uname -m)" == "x86_64" ]; then
+        # Intel
+        CONDA_URL="https://repo.anaconda.com/miniconda/Miniconda3-py38_4.10.3-MacOSX-x86_64.sh"
+    fi
+fi
+if [ "CONDA_URL" ]; then
+    wget $CONDA_URL -O $CONDA_SCRIPT
+    chmod +X $CONDA_SCRIPT
+    sudo bash $CONDA_SCRIPT -p $PREFIX"miniconda3" -b
+    rm $CONDA_SCRIPT
+else
+    echo "Failed to install miniconda3."
+fi
+
 
 if [ "$(uname)" == "Darwin" ]; then
     # macOS

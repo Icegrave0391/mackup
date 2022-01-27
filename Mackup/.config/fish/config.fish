@@ -14,13 +14,13 @@ set -g theme_color_scheme dark
 switch (uname)
     case Linux
         # conda
-        source /home/chuqi/miniconda3/etc/fish/conf.d/conda.fish
+        source /usr/local/miniconda3/etc/fish/conf.d/conda.fish
         # autojump
         source /usr/share/autojump/autojump.fish
 
     case Darwin
         # conda
-        source /Users/chuqi/opt/miniconda3/etc/fish/conf.d/conda.fish
+        source /usr/local/miniconda3/etc/fish/conf.d/conda.fish
         # autojump
         source /usr/local/share/autojump/autojump.fish
 end
