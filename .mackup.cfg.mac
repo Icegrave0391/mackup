@@ -1,6 +1,6 @@
 [storage]
 engine = file_system
-path = /Users/jianing/GitHub/config
+path = /Users/chuqi/GitHub/config
 [applications_to_sync]
 ssh
 neovim

@@ -62,7 +62,9 @@ if [ "$(uname)" == "Darwin" ]; then
     # stats
     printf "${GREEN}stats${NC}\n"
     brew install --cask stats
-
+    # iterm2
+    printf "${GREEN}iterm2${NC}\n"
+    brew install --cask iterm2
     # Copy mackup config
     ln -s -f ~/GitHub/config/.mackup.cfg.mac ~/.mackup.cfg
 
