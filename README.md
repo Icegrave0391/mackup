@@ -34,4 +34,9 @@ For the domains binded to Apple's system applications, please refer to [real-wor
     
 **macOS TextInput**    
 
-This document [symbol codes](https://sites.psu.edu/symbolcodes/mac/codemac/) shows how to input some special symbols via the combination of different hotkeys.
+This document [symbol codes](https://sites.psu.edu/symbolcodes/mac/codemac/) shows how to input some special symbols via the combination of different hotkeys.    
+
+**macOS iTerm2**    
+
+[iTerm2](https://iterm2.com/) is a powerful terminal emulator with amazing features to enhance the effciency to operate the command line. This article helps to [level-up your terminal game with iTerm2](https://www.typefloundry.com/1-800-iterm-bling.html).
+
