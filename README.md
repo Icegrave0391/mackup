@@ -1,5 +1,9 @@
 ### 0. Install mackup
 
+#### macOS
+
+For macOS, follow the [guide](https://mac.install.guide/homebrew/index.html) to install homebrew first.
+
 - macOS: `brew install mackup`
 - Linux: `pip3 install --system mackup`
 
