@@ -449,3 +449,7 @@ set -g terminal-overrides ',xterm-256color:Tc'
 set -g default-terminal "screen-256color"
 set -as terminal-overrides ',xterm*:sitm=\E[3m'
 
+
+# Fig Tmux Integration: Enabled
+source-file ~/.fig/tmux
+# End of Fig Tmux Integration

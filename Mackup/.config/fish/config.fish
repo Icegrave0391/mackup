@@ -22,7 +22,7 @@ switch (uname)
         # conda
         source /usr/local/miniconda3/etc/fish/conf.d/conda.fish
         # autojump
-        source /usr/local/share/autojump/autojump.fish
+        source /opt/homebrew/share/autojump/autojump.fish
 end
 
 # rust
