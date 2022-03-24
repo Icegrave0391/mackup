@@ -40,7 +40,7 @@ if [ "$(uname)" == "Darwin" ]; then
     # Settings
     # Install app from anywhere
     sudo spctl --master-disable
-    
+
     Killall SystemUIServer
     # To accelerate launching iTerm2
     sudo xcodebuild -license accept
@@ -67,6 +67,8 @@ if [ "$(uname)" == "Darwin" ]; then
     # fish
     printf "${GREEN}fish${NC}\n"
     brew install fish
+    echo `which fish` | sudo tee -a /etc/shells
+    chsh -s `which fish`
     # ranger
     printf "${GREEN}ranger${NC}\n"
     brew install ranger
