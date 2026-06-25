@@ -23,12 +23,27 @@ on macOS via `brew install --cask font-jetbrains-mono-nerd-font`).
 
 ### 3. Neovim
 
+The Neovim config is a [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim)-based
+`init.lua` using the built-in `vim.pack` plugin manager (Neovim 0.12+).
+
+On first launch, plugins, treesitter parsers, and LSP servers (via
+[mason](https://github.com/mason-org/mason.nvim)) install automatically.
+
+LSP is configured for **C/C++** (clangd), **Python** (pyright + ruff),
+**Go** (gopls), and **Rust** (rust-analyzer). The required language toolchains
+(go, node, rustup, tree-sitter-cli) are installed by `bootstrap.sh`.
+
+```vim
+:Lazy        " not used — this config uses vim.pack
+:checkhealth " verify everything is wired up correctly
+:Mason       " manage LSP servers / formatters
+" update plugins:
+:lua vim.pack.update()
 ```
-PackStatus
-PackUpdate
-# if there is network problem, set proxy for git:
-git config --global http.proxy 'socks5://10.27.133.113:7890'
-```
+
+The `nvim-pack-lock.json` plugin lock file is synced via mackup
+(custom app `neovim-pack-lock` under `mackup-apps/`) so plugin versions stay
+consistent across machines.
 
 ### 4. Miscs
 

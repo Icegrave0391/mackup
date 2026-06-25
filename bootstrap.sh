@@ -82,6 +82,24 @@ if [ "$(uname)" == "Darwin" ]; then
     echo `which zsh` | sudo tee -a /etc/shells
     chsh -s `which zsh`
 
+    # neovim language toolchains (for LSP via the kickstart-based init.lua)
+    printf "${GREEN}neovim language toolchains${NC}\n"
+    # tree-sitter CLI is required to compile treesitter parsers
+    brew install tree-sitter-cli
+    # Go (gopls / goimports / gofumpt are installed via `go install` below)
+    brew install go
+    # Node.js (required by the pyright language server)
+    brew install node
+    # Rust toolchain (rust-analyzer / cargo / rustfmt). rustup is keg-only.
+    brew install rustup
+    export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
+    rustup default stable
+    # Go LSP/format tools (use a reachable proxy if the default is blocked)
+    go env -w GOPROXY=https://goproxy.cn,direct
+    go install golang.org/x/tools/gopls@latest
+    go install golang.org/x/tools/cmd/goimports@latest
+    go install mvdan.cc/gofumpt@latest
+
     # Softwares
     # OpenInTerminal
     printf "${GREEN}OpenInTerminal${NC}\n"
@@ -105,6 +123,8 @@ if [ "$(uname)" == "Darwin" ]; then
     brew install --cask font-jetbrains-mono-nerd-font
     # Copy mackup config
     ln -s -f ~/GitHub/config/.mackup.cfg.mac ~/.mackup.cfg
+    # Custom mackup application definitions (e.g. neovim-pack-lock)
+    ln -s -n -f ~/GitHub/config/mackup-apps ~/.mackup
 
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     # Linux
@@ -141,8 +161,23 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     echo `which zsh` | sudo tee -a /etc/shells
     chsh -s `which zsh`
 
+    # neovim language toolchains (for LSP via the kickstart-based init.lua)
+    printf "${GREEN}neovim language toolchains${NC}\n"
+    sudo apt-get install golang-go nodejs npm -y
+    # tree-sitter CLI (for compiling treesitter parsers)
+    sudo apt-get install tree-sitter-cli -y || cargo install tree-sitter-cli
+    # Rust toolchain
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    . "$HOME/.cargo/env" 2>/dev/null || true
+    # Go LSP/format tools
+    go install golang.org/x/tools/gopls@latest
+    go install golang.org/x/tools/cmd/goimports@latest
+    go install mvdan.cc/gofumpt@latest
+
     # Copy mackup config
     ln -s -f ~/GitHub/config/.mackup.cfg ~/.mackup.cfg
+    # Custom mackup application definitions (e.g. neovim-pack-lock)
+    ln -s -n -f ~/GitHub/config/mackup-apps ~/.mackup
 fi
 
 ## .tmux

@@ -8,6 +8,12 @@ export OPENCODE_DISABLE_MODELS_FETCH=1
 export EDITOR="nvim"
 export VISUAL="nvim"
 
+# rust toolchain (rustup is keg-only on homebrew)
+export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
+
+# go binaries (gopls, goimports, gofumpt, etc.)
+export PATH="$HOME/go/bin:$PATH"
+
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"

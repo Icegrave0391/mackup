@@ -4,6 +4,7 @@ path = GitHub/config
 [applications_to_sync]
 ssh
 neovim
+neovim-pack-lock
 vim
 tmux
 oh-my-tmux

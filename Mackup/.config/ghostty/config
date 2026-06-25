@@ -65,3 +65,15 @@ keybind = cmd+alt+down=goto_split:down
 
 # quick config reload
 keybind = cmd+shift+comma=reload_config
+
+# ----------------------------------------------------------------------------
+# Quick Terminal (global drop-down terminal, à la iTerm2 hotkey window)
+# Press cmd+. anywhere in macOS to toggle a drop-down terminal.
+# NOTE: The `global:` prefix requires granting Ghostty Accessibility /
+# Input Monitoring permission on first use (System Settings > Privacy).
+# ----------------------------------------------------------------------------
+keybind = global:cmd+.=toggle_quick_terminal
+quick-terminal-position = top
+quick-terminal-screen = mouse
+quick-terminal-animation-duration = 0.15
+quick-terminal-autohide = true
