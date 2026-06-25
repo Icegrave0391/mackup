@@ -18,7 +18,8 @@ bash bootstrap.sh
 
 ### 2. Install [NerdFonts](https://www.nerdfonts.com/)
 
-Recommend: JetBrainsMono Nerd Font
+Recommend: JetBrainsMono Nerd Font (installed automatically by `bootstrap.sh`
+on macOS via `brew install --cask font-jetbrains-mono-nerd-font`).
 
 ### 3. Neovim
 
@@ -40,7 +41,21 @@ For the domains binded to Apple's system applications, please refer to [real-wor
 
 This document [symbol codes](https://sites.psu.edu/symbolcodes/mac/codemac/) shows how to input some special symbols via the combination of different hotkeys.    
 
-**macOS iTerm2**    
+**macOS Ghostty + Zsh**    
 
-[iTerm2](https://iterm2.com/) is a powerful terminal emulator with amazing features to enhance the effciency to operate the command line. This article helps to [level-up your terminal game with iTerm2](https://www.typefloundry.com/1-800-iterm-bling.html).
+The default shell setup is [Ghostty](https://ghostty.org/) (GPU-accelerated
+terminal) + `zsh`. The shell stack is installed by `bootstrap.sh` and consists
+of:
+
+- [oh-my-zsh](https://ohmyz.sh/) — plugin/framework
+- [starship](https://starship.rs/) — cross-shell prompt (`~/.config/starship.toml`)
+- `zsh-autosuggestions` + `zsh-syntax-highlighting` — fish-like UX
+- [zoxide](https://github.com/ajeetdsouza/zoxide) (`z`), [eza](https://github.com/eza-community/eza) (`ls`),
+  [bat](https://github.com/sharkdp/bat) (`cat`), [fzf](https://github.com/junegunn/fzf),
+  [fd](https://github.com/sharkdp/fd), [ripgrep](https://github.com/BurntSushi/ripgrep)
+- [atuin](https://atuin.sh/) — SQLite shell history with cross-machine sync
+
+Ghostty config lives at `~/.config/ghostty/config` and is synced via mackup.
+Reload the config in-app with `Cmd+Shift+,`.
+
 

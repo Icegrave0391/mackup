@@ -42,9 +42,9 @@ if [ "$(uname)" == "Darwin" ]; then
     sudo spctl --master-disable
 
     Killall SystemUIServer
-    # To accelerate launching iTerm2
+    # Accept Xcode license (needed by some CLI tools)
     sudo xcodebuild -license accept
-    
+
     chmod +x osx_preference_setup.sh
     bash osx_preference_setup.sh
 
@@ -58,21 +58,29 @@ if [ "$(uname)" == "Darwin" ]; then
     # neovim
     printf "${GREEN}neovim${NC}\n"
     brew install neovim
-    # autojump
-    printf "${GREEN}autojump${NC}\n"
-    brew install autojump
     # tmux
     printf "${GREEN}tmux${NC}\n"
     brew install tmux
-    # fish
-    printf "${GREEN}fish${NC}\n"
-    brew install fish
-    echo `which fish` | sudo tee -a /etc/shells
-    chsh -s `which fish`
     # ranger
     printf "${GREEN}ranger${NC}\n"
     brew install ranger
     brew install highlight
+
+    # zsh shell stack
+    printf "${GREEN}zsh + modern CLI stack${NC}\n"
+    # zsh ships with macOS, but make sure it is present
+    brew install zsh
+    # prompt
+    brew install starship
+    # zsh plugins (sourced from brew in .zshrc)
+    brew install zsh-autosuggestions zsh-syntax-highlighting
+    # modern CLI replacements / helpers
+    brew install eza bat zoxide fzf fd ripgrep
+    # shell history (SQLite, cross-machine sync)
+    brew install atuin
+    # set zsh as the login shell
+    echo `which zsh` | sudo tee -a /etc/shells
+    chsh -s `which zsh`
 
     # Softwares
     # OpenInTerminal
@@ -89,9 +97,12 @@ if [ "$(uname)" == "Darwin" ]; then
     # stats
     printf "${GREEN}stats${NC}\n"
     brew install --cask stats
-    # iterm2
-    printf "${GREEN}iterm2${NC}\n"
-    brew install --cask iterm2
+    # ghostty terminal
+    printf "${GREEN}ghostty${NC}\n"
+    brew install --cask ghostty
+    # JetBrainsMono Nerd Font (used by ghostty / starship)
+    printf "${GREEN}JetBrainsMono Nerd Font${NC}\n"
+    brew install --cask font-jetbrains-mono-nerd-font
     # Copy mackup config
     ln -s -f ~/GitHub/config/.mackup.cfg.mac ~/.mackup.cfg
 
@@ -106,9 +117,6 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     # Install neovim
     printf "${GREEN}neovim${NC}\n"
     sudo apt-get install neovim -y
-    # Install autojump
-    printf "${GREEN}autojump${NC}\n"
-    sudo apt-get install autojump -y
     # Install tmux
     printf "${GREEN}tmux${NC}\n"
     sudo apt-get install tmux -y
@@ -116,18 +124,26 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     printf "${GREEN}ranger${NC}\n"
     sudo apt-get install ranger -y
     sudo apt-get install highlight -y
-    # fish
-    printf "${GREEN}fish${NC}\n"
-    sudo apt-add-repository ppa:fish-shell/release-3
-    sudo apt-get update
-    sudo apt-get install fish -y
+
+    # zsh shell stack
+    printf "${GREEN}zsh + modern CLI stack${NC}\n"
+    sudo apt-get install zsh -y
+    # modern CLI replacements / helpers (names per Debian/Ubuntu)
+    # note: `fd` is `fd-find` and `bat` is `batcat` on Debian/Ubuntu
+    sudo apt-get install zoxide fzf fd-find bat ripgrep -y
+    # eza (may require its own apt repo on older releases)
+    sudo apt-get install eza -y || echo "eza not in apt; install manually if needed"
+    # starship prompt
+    curl -sS https://starship.rs/install.sh | sh -s -- -y
+    # atuin shell history
+    curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+    # set zsh as the login shell
+    echo `which zsh` | sudo tee -a /etc/shells
+    chsh -s `which zsh`
 
     # Copy mackup config
     ln -s -f ~/GitHub/config/.mackup.cfg ~/.mackup.cfg
 fi
-
-# shell-commands
-echo "source ~/GitHub/config/shell-commands.sh" >> ~/.bashrc
 
 ## .tmux
 # printf "${GREEN}.tmux${NC} "
@@ -143,11 +159,14 @@ echo "source ~/GitHub/config/shell-commands.sh" >> ~/.bashrc
 # nvim minipac
 git clone https://github.com/k-takata/minpac.git ~/.config/nvim/pack/minpac/opt/minpac
 
-# restore
-mackup restore
+# oh-my-zsh (install before restore so the framework dir exists)
+printf "${GREEN}oh-my-zsh${NC}\n"
+RUNZSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-# oh my fish
-printf "${GREEN}oh my fish${NC}\n"
-curl https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install | fish
-# theme
-# omf install bobthefish
+# On a fresh machine ~/.zshrc does not exist yet, so the oh-my-zsh installer
+# generates its own default template. Remove it so `mackup restore` can create
+# the symlink to our managed .zshrc without conflict.
+[ -f "$HOME/.zshrc" ] && [ ! -L "$HOME/.zshrc" ] && rm -f "$HOME/.zshrc"
+
+# restore (mackup will symlink .zshrc, .zprofile, starship.toml, ghostty config, etc.)
+mackup restore

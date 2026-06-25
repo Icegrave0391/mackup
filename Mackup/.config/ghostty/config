@@ -1,0 +1,67 @@
+# Ghostty configuration
+# https://ghostty.org/docs/config/reference
+# Reload config in-app: Cmd+Shift+, (or restart)
+
+# ----------------------------------------------------------------------------
+# Font
+# ----------------------------------------------------------------------------
+font-family = "JetBrainsMono Nerd Font"
+font-size = 14
+font-thicken = true
+# disable programming ligatures (uncomment if you dislike them)
+# font-feature = -calt, -liga, -dlig
+
+# ----------------------------------------------------------------------------
+# Theme & colors (auto light/dark following macOS appearance)
+# ----------------------------------------------------------------------------
+theme = light:Catppuccin Latte,dark:Catppuccin Mocha
+
+# slight transparency + blur (macOS)
+background-opacity = 0.96
+background-blur = 20
+
+# ----------------------------------------------------------------------------
+# Cursor
+# ----------------------------------------------------------------------------
+cursor-style = block
+cursor-style-blink = true
+shell-integration-features = no-cursor
+
+# ----------------------------------------------------------------------------
+# Window
+# ----------------------------------------------------------------------------
+window-padding-x = 10
+window-padding-y = 8
+window-padding-balance = true
+window-save-state = always
+macos-titlebar-style = transparent
+macos-option-as-alt = true
+
+# new windows/tabs inherit the working directory
+window-inherit-working-directory = true
+
+# ----------------------------------------------------------------------------
+# Mouse
+# ----------------------------------------------------------------------------
+mouse-hide-while-typing = true
+copy-on-select = clipboard
+
+# ----------------------------------------------------------------------------
+# Scrollback
+# ----------------------------------------------------------------------------
+scrollback-limit = 10000000
+
+# ----------------------------------------------------------------------------
+# Keybindings (splits & navigation, tmux-friendly)
+# ----------------------------------------------------------------------------
+keybind = cmd+d=new_split:right
+keybind = cmd+shift+d=new_split:down
+keybind = cmd+w=close_surface
+keybind = cmd+enter=toggle_split_zoom
+keybind = cmd+alt+left=goto_split:left
+keybind = cmd+alt+right=goto_split:right
+keybind = cmd+alt+up=goto_split:up
+keybind = cmd+alt+down=goto_split:down
+
+# quick config reload
+keybind = cmd+shift+comma=reload_config
