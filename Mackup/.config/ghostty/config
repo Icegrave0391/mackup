@@ -25,7 +25,15 @@ background-blur = 20
 # ----------------------------------------------------------------------------
 cursor-style = block
 cursor-style-blink = true
-shell-integration-features = no-cursor
+
+# ----------------------------------------------------------------------------
+# Shell integration
+#   no-cursor     - let our config control the cursor style (not the shell)
+#   ssh-env       - propagate a compatible TERM over SSH (fixes
+#                   "'xterm-ghostty': unknown terminal type" on remote hosts)
+#   ssh-terminfo  - install ghostty's terminfo on the remote host if possible
+# ----------------------------------------------------------------------------
+shell-integration-features = no-cursor,ssh-env,ssh-terminfo
 
 # ----------------------------------------------------------------------------
 # Window
