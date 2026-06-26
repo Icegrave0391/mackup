@@ -13,8 +13,40 @@ For macOS, follow the [guide](https://mac.install.guide/homebrew/index.html) to 
 
 ```
 (optional) chmod +x bootstrap.sh
+
+# auto-detect platform (macOS or Linux):
 bash bootstrap.sh
+
+# or force a specific mode:
+bash bootstrap.sh macos            # macOS (Homebrew)
+bash bootstrap.sh linux            # Linux with sudo / apt
+bash bootstrap.sh linux-container  # no-sudo dev container (mise, user space)
 ```
+
+#### Container / no-sudo environments
+
+For a dev container without `sudo` (no `apt`, can't `chsh`), use:
+
+```
+bash bootstrap.sh linux-container
+```
+
+This path installs everything in **user space** via
+[mise](https://mise.jdx.dev) — no root required:
+
+- mise itself goes to `~/.local/bin`
+- CLI tools (starship, eza, bat, fzf, fd, ripgrep, zoxide, atuin, neovim) and
+  language runtimes (node, go, rust, python) are declared in
+  `~/.config/mise/config.toml` (synced via mackup) and installed with
+  `mise install`
+- oh-my-zsh + its plugins are git-cloned (no brew)
+- mackup is installed with `pip install --user`
+- Since `chsh` needs root, an `exec zsh` guard is appended to `~/.bashrc` so
+  login shells drop into zsh automatically
+
+The same synced dotfiles (`.zshrc`, nvim config, etc.) work on both macOS and
+the container — `.zshrc` detects the platform and sources Homebrew or mise
+paths accordingly.
 
 ### 2. Install [NerdFonts](https://www.nerdfonts.com/)
 

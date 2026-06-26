@@ -1,15 +1,12 @@
 # ============================================================================
 #  Path / Environment
 # ============================================================================
-export PATH="$HOME/.opencode/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/.opencode/bin:$PATH"
 export OPENCODE_DISABLE_MODELS_FETCH=1
 
 # editor
 export EDITOR="nvim"
 export VISUAL="nvim"
-
-# rust toolchain (rustup is keg-only on homebrew)
-export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
 
 # go binaries (gopls, goimports, gofumpt, etc.)
 export PATH="$HOME/go/bin:$PATH"
@@ -17,6 +14,23 @@ export PATH="$HOME/go/bin:$PATH"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# ============================================================================
+#  Platform detection (macOS=brew, Linux container=mise)
+# ============================================================================
+# Homebrew (macOS): set up env + rust toolchain path if present
+if [ -x /opt/homebrew/bin/brew ]; then
+  # rust toolchain (rustup is keg-only on homebrew)
+  export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
+fi
+
+# mise (Linux container / no-sudo userspace tool manager)
+# Activates language runtimes and CLI tools installed under ~/.local
+if [ -x "$HOME/.local/bin/mise" ]; then
+  eval "$("$HOME/.local/bin/mise" activate zsh)"
+elif command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate zsh)"
+fi
 
 # ============================================================================
 #  oh-my-zsh
@@ -27,15 +41,16 @@ export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME=""
 
 # omz plugins (only lightweight, non-duplicated ones; autosuggestions &
-# syntax-highlighting are sourced from brew below for faster updates)
+# syntax-highlighting are sourced separately below for faster updates)
 plugins=(
   git
   sudo
   extract
-  macos
   colored-man-pages
   command-not-found
 )
+# macos plugin only makes sense on macOS
+[ "$(uname)" = "Darwin" ] && plugins+=(macos)
 
 source "$ZSH/oh-my-zsh.sh"
 
@@ -52,11 +67,17 @@ setopt HIST_VERIFY            # show command before executing from history
 setopt EXTENDED_HISTORY       # record timestamps
 
 # ============================================================================
-#  Zsh enhancements (brew)
+#  Zsh enhancements (autosuggestions)
 # ============================================================================
-# autosuggestions (fish-like grey suggestions)
-[ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] \
-  && source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+# Try multiple locations: brew (macOS), oh-my-zsh custom plugin (Linux), distro paths
+for _f in \
+  /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh \
+  "$ZSH/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" \
+  /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh \
+  /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh; do
+  [ -f "$_f" ] && { source "$_f"; break; }
+done
+unset _f
 
 # ============================================================================
 #  Tool integrations
@@ -68,10 +89,18 @@ command -v starship >/dev/null && eval "$(starship init zsh)"
 command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
 
 # fzf (Ctrl-R history, Ctrl-T files, Alt-C cd)
-[ -f /opt/homebrew/opt/fzf/shell/completion.zsh ] \
-  && source /opt/homebrew/opt/fzf/shell/completion.zsh
-[ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ] \
-  && source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+if command -v fzf >/dev/null 2>&1; then
+  # fzf 0.48+ ships shell integration via `fzf --zsh` (cross-platform)
+  if fzf --zsh >/dev/null 2>&1; then
+    source <(fzf --zsh)
+  else
+    # fallback to brew-installed integration scripts (older fzf on macOS)
+    [ -f /opt/homebrew/opt/fzf/shell/completion.zsh ] \
+      && source /opt/homebrew/opt/fzf/shell/completion.zsh
+    [ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ] \
+      && source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+  fi
+fi
 
 # atuin (SQLite shell history, cross-machine sync) - keep up arrow native
 command -v atuin >/dev/null && eval "$(atuin init zsh --disable-up-arrow)"
@@ -155,5 +184,11 @@ opencode() {
 # ============================================================================
 #  Syntax highlighting (MUST be sourced last)
 # ============================================================================
-[ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] \
-  && source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+for _f in \
+  /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh \
+  "$ZSH/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" \
+  /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh \
+  /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh; do
+  [ -f "$_f" ] && { source "$_f"; break; }
+done
+unset _f

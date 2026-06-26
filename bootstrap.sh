@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 # Do not use `sudo` to run this script
-# $ bash bootstrap.sh
+#
+# Usage:
+#   ./bootstrap.sh                  # auto-detect platform (macOS or Linux)
+#   ./bootstrap.sh macos            # force macOS path (Homebrew)
+#   ./bootstrap.sh linux            # force Linux path (apt + sudo)
+#   ./bootstrap.sh linux-container  # no-sudo container path (mise, user space)
+#
+# The `linux-container` mode is for dev containers without sudo / apt.
+# It installs everything in user space via mise (https://mise.jdx.dev) and a
+# git-cloned oh-my-zsh, then restores dotfiles with a pip --user mackup.
 
 # color
 GREEN='\033[0;32m'
@@ -10,10 +19,25 @@ RED='\033[0;31m'
 # install prefix
 PREFIX="/usr/local/"
 
-# Install miniconda3 (only for macOS now)
+# ----------------------------------------------------------------------------
+# Determine mode: explicit arg wins, otherwise auto-detect by OS.
+# ----------------------------------------------------------------------------
+MODE="$1"
+if [ -z "$MODE" ]; then
+    if [ "$(uname)" == "Darwin" ]; then
+        MODE="macos"
+    else
+        MODE="linux"
+    fi
+fi
+printf "${GREEN}bootstrap mode: ${MODE}${NC}\n"
+
+# ============================================================================
+#  miniconda3 (macOS only; needs sudo, skipped in container mode)
+# ============================================================================
 CONDA_SCRIPT="conda_install.sh"
 CONDA_URL=""
-if [ "$(uname)" == "Darwin" ]; then
+if [ "$MODE" == "macos" ]; then
     # macOS
     brew install wget
     if [ "$(uname -m)" == "arm64" ]; then
@@ -23,18 +47,14 @@ if [ "$(uname)" == "Darwin" ]; then
         # Intel
         CONDA_URL="https://repo.anaconda.com/miniconda/Miniconda3-py38_4.10.3-MacOSX-x86_64.sh"
     fi
-fi
-if [ "CONDA_URL" ]; then
     wget $CONDA_URL -O $CONDA_SCRIPT
     chmod +X $CONDA_SCRIPT
     sudo bash $CONDA_SCRIPT -p $PREFIX"miniconda3" -b
     rm $CONDA_SCRIPT
-else
-    echo "Failed to install miniconda3."
 fi
 
 
-if [ "$(uname)" == "Darwin" ]; then
+if [ "$MODE" == "macos" ]; then
     # macOS
 
     # Settings
@@ -126,8 +146,8 @@ if [ "$(uname)" == "Darwin" ]; then
     # Custom mackup application definitions (e.g. neovim-pack-lock)
     ln -s -n -f ~/GitHub/config/mackup-apps ~/.mackup
 
-elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-    # Linux
+elif [ "$MODE" == "linux" ]; then
+    # Linux (with sudo / apt)
 
     sudo apt install curl -y
 
@@ -178,6 +198,58 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     ln -s -f ~/GitHub/config/.mackup.cfg ~/.mackup.cfg
     # Custom mackup application definitions (e.g. neovim-pack-lock)
     ln -s -n -f ~/GitHub/config/mackup-apps ~/.mackup
+
+elif [ "$MODE" == "linux-container" ]; then
+    # ------------------------------------------------------------------------
+    # Linux dev container WITHOUT sudo.
+    # Everything is installed in user space via mise + git + pip --user.
+    # Assumes: zsh, git, curl, and python3 are already present in the image.
+    # ------------------------------------------------------------------------
+
+    # 1. Install mise (user-space tool manager) -> ~/.local/bin/mise
+    printf "${GREEN}mise${NC}\n"
+    if ! command -v mise >/dev/null 2>&1 && [ ! -x "$HOME/.local/bin/mise" ]; then
+        curl https://mise.run | sh
+    fi
+    export PATH="$HOME/.local/bin:$PATH"
+    MISE="$HOME/.local/bin/mise"
+    [ -x "$MISE" ] || MISE="$(command -v mise)"
+
+    # 2. Trust + install all tools declared in the synced mise config.
+    #    The config is restored by mackup below, but on first run it may not be
+    #    present yet, so install directly from the repo copy if needed.
+    printf "${GREEN}mise tools (starship, eza, bat, fzf, fd, rg, zoxide, atuin, nvim, node, go, rust, ...)${NC}\n"
+    mkdir -p "$HOME/.config/mise"
+    if [ ! -e "$HOME/.config/mise/config.toml" ]; then
+        cp ~/GitHub/config/Mackup/.config/mise/config.toml "$HOME/.config/mise/config.toml"
+    fi
+    "$MISE" trust --all 2>/dev/null || "$MISE" trust "$HOME/.config/mise/config.toml" 2>/dev/null || true
+    "$MISE" install
+
+    # 3. mackup in user space (no sudo)
+    printf "${GREEN}mackup (pip --user)${NC}\n"
+    python3 -m pip install --user mackup || pip3 install --user mackup
+    ln -s -f ~/GitHub/config/.mackup.cfg ~/.mackup.cfg
+    ln -s -n -f ~/GitHub/config/mackup-apps ~/.mackup
+
+    # 4. Go LSP/format tools for neovim (via the mise-managed go)
+    printf "${GREEN}Go LSP tools${NC}\n"
+    "$MISE" exec -- go env -w GOPROXY=https://goproxy.cn,direct 2>/dev/null || true
+    "$MISE" exec -- go install golang.org/x/tools/gopls@latest || true
+    "$MISE" exec -- go install golang.org/x/tools/cmd/goimports@latest || true
+    "$MISE" exec -- go install mvdan.cc/gofumpt@latest || true
+
+    # 5. Auto-enter zsh on login (cannot chsh without sudo in a container).
+    #    Append an exec-zsh guard to ~/.bashrc if not already present.
+    if ! grep -q 'exec zsh' "$HOME/.bashrc" 2>/dev/null; then
+        cat >> "$HOME/.bashrc" <<'EOF'
+
+# Launch zsh as the interactive shell (container has no chsh/sudo)
+if [ -t 1 ] && command -v zsh >/dev/null 2>&1 && [ -z "$ZSH_VERSION" ]; then
+    exec zsh
+fi
+EOF
+    fi
 fi
 
 ## .tmux
@@ -191,17 +263,42 @@ fi
 #     cp ~/.tmux/.tmux.conf.local ~/
 # fi
 
-# nvim minipac
-git clone https://github.com/k-takata/minpac.git ~/.config/nvim/pack/minpac/opt/minpac
+# ============================================================================
+#  Shell framework + dotfile restore (all modes)
+# ============================================================================
 
 # oh-my-zsh (install before restore so the framework dir exists)
 printf "${GREEN}oh-my-zsh${NC}\n"
-RUNZSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    RUNZSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
+
+# In container mode there is no Homebrew, so the zsh autosuggestions /
+# syntax-highlighting plugins (sourced by .zshrc from several candidate paths)
+# are git-cloned into the oh-my-zsh custom plugins directory.
+if [ "$MODE" == "linux-container" ]; then
+    ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+    [ -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ] || \
+        git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions \
+            "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+    [ -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ] || \
+        git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting \
+            "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+fi
 
 # On a fresh machine ~/.zshrc does not exist yet, so the oh-my-zsh installer
 # generates its own default template. Remove it so `mackup restore` can create
 # the symlink to our managed .zshrc without conflict.
 [ -f "$HOME/.zshrc" ] && [ ! -L "$HOME/.zshrc" ] && rm -f "$HOME/.zshrc"
 
-# restore (mackup will symlink .zshrc, .zprofile, starship.toml, ghostty config, etc.)
-mackup restore
+# restore (mackup will symlink .zshrc, .zprofile, starship.toml, nvim config,
+# mise config, ghostty config, etc.)
+if command -v mackup >/dev/null 2>&1; then
+    mackup restore
+else
+    # container: mackup was installed with pip --user, may not be on PATH yet
+    python3 -m mackup restore || ~/.local/bin/mackup restore
+fi
+
+# Neovim plugins/LSP install automatically on first launch (kickstart + vim.pack).
+printf "${GREEN}Done. Launch 'nvim' once to install plugins, then start a new shell.${NC}\n"

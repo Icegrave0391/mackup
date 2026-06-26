@@ -1,0 +1,33 @@
+# mise global config — https://mise.jdx.dev
+# Installs language runtimes and CLI tools in user space (no sudo required).
+# Used primarily on the Linux dev container where Homebrew is unavailable.
+#
+# Apply with:  mise install      (installs everything below)
+# After edits: mise install
+#
+# On macOS these tools come from Homebrew instead (see bootstrap.sh), so this
+# file is mainly relevant for the `linux-container` bootstrap path.
+
+[tools]
+# --- modern CLI replacements / shell UX ---
+starship   = "latest"   # prompt
+eza        = "latest"   # ls
+bat        = "latest"   # cat
+zoxide     = "latest"   # z (smart cd)
+fzf        = "latest"   # fuzzy finder
+fd         = "latest"   # find
+ripgrep    = "latest"   # rg / grep
+atuin      = "latest"   # shell history
+neovim     = "latest"   # editor
+tree-sitter = "latest"  # nvim treesitter parser compiler
+
+# --- language runtimes / toolchains (for nvim LSP) ---
+node       = "latest"   # pyright LSP + general tooling
+go         = "latest"   # gopls / goimports / gofumpt
+rust       = "latest"   # rust-analyzer / cargo / rustfmt
+python     = "latest"   # general
+
+[settings]
+# Trust this config without prompting (it only declares tool versions).
+# Auto-install missing tools when entering a directory / running tasks.
+idiomatic_version_file_enable_tools = []
