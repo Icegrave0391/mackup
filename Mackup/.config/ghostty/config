@@ -12,9 +12,9 @@ font-thicken = true
 # font-feature = -calt, -liga, -dlig
 
 # ----------------------------------------------------------------------------
-# Theme & colors (auto light/dark following macOS appearance)
+# Theme & colors (always dark)
 # ----------------------------------------------------------------------------
-theme = light:Catppuccin Latte,dark:Catppuccin Mocha
+theme = Catppuccin Mocha
 
 # slight transparency + blur (macOS)
 background-opacity = 0.96
