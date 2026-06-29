@@ -43,7 +43,10 @@ window-padding-y = 8
 window-padding-balance = true
 window-save-state = always
 macos-titlebar-style = transparent
-macos-option-as-alt = true
+# NOTE: macos-option-as-alt intercepts IME (input method) key events and breaks
+# Chinese/CJK input. Leave it off so input methods work. Enable per-need only if
+# you rely on Alt+key word-motion in the shell.
+# macos-option-as-alt = true
 
 # new windows/tabs inherit the working directory
 window-inherit-working-directory = true
@@ -80,7 +83,7 @@ keybind = cmd+shift+comma=reload_config
 # NOTE: The `global:` prefix requires granting Ghostty Accessibility /
 # Input Monitoring permission on first use (System Settings > Privacy).
 # ----------------------------------------------------------------------------
-keybind = global:cmd+.=toggle_quick_terminal
+keybind = global:cmd+/=toggle_quick_terminal
 quick-terminal-position = top
 quick-terminal-screen = mouse
 quick-terminal-animation-duration = 0.15

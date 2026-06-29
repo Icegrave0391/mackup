@@ -166,7 +166,7 @@ unset_proxy() {
 #  opencode (wrapped with its own proxy)
 # ============================================================================
 opencode() {
-  local proxy_url='http://deepseek:<PROXY_PASSWORD>@ss.deepseek.com:3128'
+  #local proxy_url='http://deepseek:<PROXY_PASSWORD>@ss.deepseek.com:3128'
   local no_proxy='localhost,127.0.0.1,::1,10.0.0.0/8,10.9,200.200,.high-flyer.cn,.high-five-ai.xyz,.deepseek.com'
 
   HTTP_PROXY="$proxy_url" \

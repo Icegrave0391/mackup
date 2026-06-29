@@ -7,6 +7,8 @@ command_timeout = 1000
 add_newline = true
 
 format = """
+$username\
+$hostname\
 $directory\
 $git_branch\
 $git_status\
@@ -17,6 +19,18 @@ $golang\
 $cmd_duration\
 $line_break\
 $character"""
+
+[username]
+show_always = true
+style_user = "bold yellow"
+style_root = "bold red"
+format = "[$user]($style) "
+
+[hostname]
+# only show host when connected over SSH (handy on the dev container)
+ssh_only = true
+style = "bold green"
+format = "at [$hostname]($style) "
 
 [character]
 success_symbol = "[❯](bold green)"
