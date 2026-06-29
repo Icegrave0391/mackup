@@ -154,17 +154,12 @@ elif [ "$MODE" == "linux" ]; then
     sudo apt-get update
     sudo apt-get install -y curl git zsh tmux ranger highlight build-essential
 
-    # mackup (PEP 668: use --user, not the removed --system flag)
-    printf "${GREEN}mackup${NC}\n"
-    python3 -m pip install --user --break-system-packages mackup \
-        || pip3 install --user mackup
-    export PATH="$HOME/.local/bin:$PATH"
-
     # mise (user-space tool manager) -> installs modern CLI tools + runtimes
     printf "${GREEN}mise${NC}\n"
     if ! command -v mise >/dev/null 2>&1 && [ ! -x "$HOME/.local/bin/mise" ]; then
         curl https://mise.run | sh
     fi
+    export PATH="$HOME/.local/bin:$PATH"
     MISE="$HOME/.local/bin/mise"
     [ -x "$MISE" ] || MISE="$(command -v mise)"
 
@@ -176,6 +171,12 @@ elif [ "$MODE" == "linux" ]; then
         cp ~/GitHub/config/Mackup/.config/mise/config.toml "$HOME/.config/mise/config.toml"
     "$MISE" trust --all 2>/dev/null || true
     "$MISE" install
+
+    # mackup — installed with the mise-managed python (no system pip needed).
+    # mise just installed python (with pip) above; use it in user space.
+    printf "${GREEN}mackup${NC}\n"
+    "$MISE" exec python -- python -m pip install --user mackup \
+        || "$MISE" exec python -- pip install --user mackup
 
     # zsh plugins (no brew on Linux): clone into oh-my-zsh custom dir later
     # (handled in the shared section below)
@@ -293,9 +294,13 @@ fi
 # mise config, ghostty config, etc.)
 if command -v mackup >/dev/null 2>&1; then
     mackup restore
+elif [ -x "$HOME/.local/bin/mackup" ]; then
+    "$HOME/.local/bin/mackup" restore
+elif [ -n "${MISE:-}" ] && [ -x "$MISE" ]; then
+    # mackup was installed with the mise-managed python; run it via that python
+    "$MISE" exec python -- python -m mackup restore
 else
-    # container: mackup was installed with pip --user, may not be on PATH yet
-    python3 -m mackup restore || ~/.local/bin/mackup restore
+    python3 -m mackup restore
 fi
 
 # Neovim plugins/LSP install automatically on first launch (kickstart + vim.pack).
