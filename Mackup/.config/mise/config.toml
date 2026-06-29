@@ -25,7 +25,11 @@ tree-sitter = "latest"  # nvim treesitter parser compiler
 node       = "latest"   # pyright LSP + general tooling
 go         = "latest"   # gopls / goimports / gofumpt
 rust       = "latest"   # rust-analyzer / cargo / rustfmt
-python     = "latest"   # general
+# NOTE: python is intentionally NOT managed by mise here. mise's python
+# install either compiles from source (slow) or downloads a large prebuilt
+# tarball from GitHub (often times out). The system python3 is sufficient for
+# mackup, and neovim's pyright LSP relies on node, not python. Install python
+# via mise per-project only if you actually need a specific version.
 
 [settings]
 # Trust this config without prompting (it only declares tool versions).

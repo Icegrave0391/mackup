@@ -172,11 +172,16 @@ elif [ "$MODE" == "linux" ]; then
     "$MISE" trust --all 2>/dev/null || true
     "$MISE" install
 
-    # mackup — installed with the mise-managed python (no system pip needed).
-    # mise just installed python (with pip) above; use it in user space.
+    # mackup — installed with the SYSTEM python3 (every Linux ships one).
+    # We don't let mise manage python (slow compile / flaky GitHub download).
     printf "${GREEN}mackup${NC}\n"
-    "$MISE" exec python -- python -m pip install --user mackup \
-        || "$MISE" exec python -- pip install --user mackup
+    # ensure pip exists for the user (no sudo needed)
+    python3 -m pip --version >/dev/null 2>&1 || python3 -m ensurepip --user 2>/dev/null || true
+    # PEP 668 (Ubuntu 24.04+) needs --break-system-packages for --user installs
+    python3 -m pip install --user --break-system-packages mackup 2>/dev/null \
+        || python3 -m pip install --user mackup 2>/dev/null \
+        || pipx install mackup 2>/dev/null \
+        || sudo apt-get install -y python3-pip && python3 -m pip install --user --break-system-packages mackup
 
     # zsh plugins (no brew on Linux): clone into oh-my-zsh custom dir later
     # (handled in the shared section below)
@@ -296,9 +301,6 @@ if command -v mackup >/dev/null 2>&1; then
     mackup restore
 elif [ -x "$HOME/.local/bin/mackup" ]; then
     "$HOME/.local/bin/mackup" restore
-elif [ -n "${MISE:-}" ] && [ -x "$MISE" ]; then
-    # mackup was installed with the mise-managed python; run it via that python
-    "$MISE" exec python -- python -m mackup restore
 else
     python3 -m mackup restore
 fi
