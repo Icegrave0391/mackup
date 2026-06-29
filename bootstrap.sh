@@ -147,57 +147,55 @@ if [ "$MODE" == "macos" ]; then
     ln -s -n -f ~/GitHub/config/mackup-apps ~/.mackup
 
 elif [ "$MODE" == "linux" ]; then
-    # Linux (with sudo / apt)
+    # Linux (with sudo / apt). Base packages come from apt; tools that ship
+    # too-old versions in the distro repos (neovim, eza, bat, fd, ...) are
+    # installed via mise so they match the macOS versions.
 
-    sudo apt install curl -y
+    sudo apt-get update
+    sudo apt-get install -y curl git zsh tmux ranger highlight build-essential
 
-    # mackup
+    # mackup (PEP 668: use --user, not the removed --system flag)
     printf "${GREEN}mackup${NC}\n"
-    sudo pip3 install --system mackup
-    # Install neovim
-    printf "${GREEN}neovim${NC}\n"
-    sudo apt-get install neovim -y
-    # Install tmux
-    printf "${GREEN}tmux${NC}\n"
-    sudo apt-get install tmux -y
-    # Install ranger
-    printf "${GREEN}ranger${NC}\n"
-    sudo apt-get install ranger -y
-    sudo apt-get install highlight -y
+    python3 -m pip install --user --break-system-packages mackup \
+        || pip3 install --user mackup
+    export PATH="$HOME/.local/bin:$PATH"
 
-    # zsh shell stack
-    printf "${GREEN}zsh + modern CLI stack${NC}\n"
-    sudo apt-get install zsh -y
-    # modern CLI replacements / helpers (names per Debian/Ubuntu)
-    # note: `fd` is `fd-find` and `bat` is `batcat` on Debian/Ubuntu
-    sudo apt-get install zoxide fzf fd-find bat ripgrep -y
-    # eza (may require its own apt repo on older releases)
-    sudo apt-get install eza -y || echo "eza not in apt; install manually if needed"
-    # starship prompt
-    curl -sS https://starship.rs/install.sh | sh -s -- -y
-    # atuin shell history
-    curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+    # mise (user-space tool manager) -> installs modern CLI tools + runtimes
+    printf "${GREEN}mise${NC}\n"
+    if ! command -v mise >/dev/null 2>&1 && [ ! -x "$HOME/.local/bin/mise" ]; then
+        curl https://mise.run | sh
+    fi
+    MISE="$HOME/.local/bin/mise"
+    [ -x "$MISE" ] || MISE="$(command -v mise)"
+
+    # modern CLI tools + language runtimes (neovim 0.12+, eza, bat, fd,
+    # ripgrep, fzf, zoxide, starship, atuin, node, go, rust, python, tree-sitter)
+    printf "${GREEN}mise tools${NC}\n"
+    mkdir -p "$HOME/.config/mise"
+    [ -e "$HOME/.config/mise/config.toml" ] || \
+        cp ~/GitHub/config/Mackup/.config/mise/config.toml "$HOME/.config/mise/config.toml"
+    "$MISE" trust --all 2>/dev/null || true
+    "$MISE" install
+
+    # zsh plugins (no brew on Linux): clone into oh-my-zsh custom dir later
+    # (handled in the shared section below)
+
     # set zsh as the login shell
-    echo `which zsh` | sudo tee -a /etc/shells
-    chsh -s `which zsh`
+    echo "$(which zsh)" | sudo tee -a /etc/shells >/dev/null
+    chsh -s "$(which zsh)"
 
-    # neovim language toolchains (for LSP via the kickstart-based init.lua)
-    printf "${GREEN}neovim language toolchains${NC}\n"
-    sudo apt-get install golang-go nodejs npm -y
-    # tree-sitter CLI (for compiling treesitter parsers)
-    sudo apt-get install tree-sitter-cli -y || cargo install tree-sitter-cli
-    # Rust toolchain
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-    . "$HOME/.cargo/env" 2>/dev/null || true
-    # Go LSP/format tools
-    go install golang.org/x/tools/gopls@latest
-    go install golang.org/x/tools/cmd/goimports@latest
-    go install mvdan.cc/gofumpt@latest
+    # Go LSP/format tools for neovim (via the mise-managed go)
+    printf "${GREEN}Go LSP tools${NC}\n"
+    "$MISE" exec -- go install golang.org/x/tools/gopls@latest || true
+    "$MISE" exec -- go install golang.org/x/tools/cmd/goimports@latest || true
+    "$MISE" exec -- go install mvdan.cc/gofumpt@latest || true
 
     # Copy mackup config
     ln -s -f ~/GitHub/config/.mackup.cfg ~/.mackup.cfg
     # Custom mackup application definitions (e.g. neovim-pack-lock)
     ln -s -n -f ~/GitHub/config/mackup-apps ~/.mackup
+    # Linux gets the zsh plugins git-cloned (same as container path)
+    LINUX_NEEDS_ZSH_PLUGINS=1
 
 elif [ "$MODE" == "linux-container" ]; then
     # ------------------------------------------------------------------------
@@ -273,10 +271,10 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
     RUNZSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
-# In container mode there is no Homebrew, so the zsh autosuggestions /
-# syntax-highlighting plugins (sourced by .zshrc from several candidate paths)
-# are git-cloned into the oh-my-zsh custom plugins directory.
-if [ "$MODE" == "linux-container" ]; then
+# On Linux (both container and apt modes) there is no Homebrew, so the zsh
+# autosuggestions / syntax-highlighting plugins (sourced by .zshrc from several
+# candidate paths) are git-cloned into the oh-my-zsh custom plugins directory.
+if [ "$MODE" == "linux-container" ] || [ "$MODE" == "linux" ]; then
     ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
     [ -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ] || \
         git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions \
