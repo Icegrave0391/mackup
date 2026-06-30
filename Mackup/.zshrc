@@ -141,7 +141,8 @@ function gi() { curl -sLw '\n' "https://www.toptal.com/developers/gitignore/api/
 #  Proxy helpers
 # ============================================================================
 set_proxy() {
-    local proxy="socks5h://192.168.30.99:3130"
+    #local proxy="socks5h://192.168.30.99:3130"
+    local proxy="http://deepseek:+ogyigDac5@ss.deepseek.com:3128"
     local bypass="localhost,127.0.0.1,::1,.local,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
 
     export ALL_PROXY="$proxy"

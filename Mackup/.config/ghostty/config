@@ -83,7 +83,7 @@ keybind = cmd+shift+comma=reload_config
 # NOTE: The `global:` prefix requires granting Ghostty Accessibility /
 # Input Monitoring permission on first use (System Settings > Privacy).
 # ----------------------------------------------------------------------------
-keybind = global:cmd+/=toggle_quick_terminal
+keybind = global:cmd+shift+.=toggle_quick_terminal
 quick-terminal-position = top
 quick-terminal-screen = mouse
 quick-terminal-animation-duration = 0.15
