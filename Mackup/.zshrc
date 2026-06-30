@@ -137,6 +137,39 @@ alias gl='git log --oneline --graph --decorate -20'
 # gitignore generator
 function gi() { curl -sLw '\n' "https://www.toptal.com/developers/gitignore/api/$*" ; }
 
+# clip2remote: send the clipboard image to a remote host so you can reference it
+# in opencode (which reads the clipboard of the machine it runs on, not yours).
+# Usage:  clip2remote [host] [remote-dir]
+#   clip2remote                 -> default host dev-cpu-hg, /tmp
+#   clip2remote hf-linux        -> host hf-linux, /tmp
+#   clip2remote dev-cpu-hg ~/img
+# Requires pngpaste on macOS (brew install pngpaste). Prints the remote path,
+# which you can paste into opencode as `@<path>`.
+clip2remote() {
+    local host="${1:-dev-cpu-hg}"
+    local dir="${2:-/tmp}"
+    if ! command -v pngpaste >/dev/null 2>&1; then
+        echo "pngpaste not found. Install with: brew install pngpaste" >&2
+        return 1
+    fi
+    local fname="clip-$(date +%Y%m%d-%H%M%S).png"
+    local rpath="$dir/$fname"
+    if pngpaste - 2>/dev/null | ssh "$host" "cat > '$rpath'"; then
+        # verify it actually wrote something non-empty
+        if ssh "$host" "test -s '$rpath'"; then
+            echo "uploaded -> $host:$rpath"
+            echo "in opencode use:  @$rpath"
+        else
+            echo "clipboard has no image (or upload failed)" >&2
+            ssh "$host" "rm -f '$rpath'" 2>/dev/null
+            return 1
+        fi
+    else
+        echo "failed: no image in clipboard, or ssh to '$host' failed" >&2
+        return 1
+    fi
+}
+
 # ============================================================================
 #  Proxy helpers
 # ============================================================================
